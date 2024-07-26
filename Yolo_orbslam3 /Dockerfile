@@ -63,7 +63,6 @@ RUN git clone https://github.com/stevenlovegrove/Pangolin.git && \
     make install
 
 # install eigen
-#Eigen
 RUN git clone https://gitlab.com/libeigen/eigen.git && \
     cd eigen/ && \
     git checkout 3.3.9 && \
@@ -72,5 +71,15 @@ RUN git clone https://gitlab.com/libeigen/eigen.git && \
     cmake .. && \
     make install
 
+
+# install libtorch
+RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcpu.zip && \
+    unzip libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcpu.zip && \
+    mv libtorch/ PATH/YOLO_ORB_SLAM3/Thirdparty/
+
+
+RUN cd YOLO_ORB_SLAM3 
+RUN chmod +x build.sh
+RUN ./build.sh
 
 CMD ["/bin/bash"]
