@@ -81,8 +81,7 @@ RUN git clone https://github.com/stevenlovegrove/Pangolin.git && \
 # install libtorch
 RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcpu.zip && \
     unzip libtorch-cxx11-abi-shared-with-deps-1.11.0+cpu.zip && \
-    mkdir -p /yolo_orbslam3/Thirdparty/libtorch && \
-    mv libtorch /yolo_orbslam3/Thirdparty/libtorch
+    mv libtorch /yolo_orbslam3/Thirdparty
 
 RUN apt-get install pip -y
 RUN pip install torch torchvision
@@ -92,15 +91,14 @@ RUN apt-get install libssl-dev -y
 
 
 # Set the Torch_DIR environment variable
-ENV Torch_DIR=/yolo_orbslam3/Thirdparty/libtorch/libtorch/share/cmake/Torch
-ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/yolo_orbslam3/Thirdparty/libtorch/libtorch
+RUN export Torch_DIR=/yolo_orbslam3/Thirdparty/libtorch/share/cmake/Torch
+ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/yolo_orbslam3/Thirdparty/libtorch
 
 # copy repository into container
 COPY /YOLO_ORB_SLAM3 /yolo_orbslam3
 
 RUN cd /yolo_orbslam3
 RUN chmod +x build.sh
-RUN export Torch_DIR=/yolo_orbslam3/Thirdparty/libtorch/libtorch/share/cmake/Torch
 RUN ./build.sh
 
 CMD ["/bin/bash"]
